@@ -1,0 +1,1090 @@
+/*
+ * =================================================================================
+ * SMART TRANSMISSION TOWER MONITORING SYSTEM - MODERN IOT STYLESHEET (style.css)
+ * Modern Clean Light Dashboard Theme (inspired by medical/industrial telemetry UI)
+ * Features: Pill status badges, Alert notification banner, Clean metric cards,
+ * Smooth dual-channel telemetry chart, and Dark Mode toggle support.
+ * =================================================================================
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+:root {
+  /* Clean Modern Light Theme (Default - matches reference screenshot) */
+  --bg-page: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f1f5f9;
+  --bg-card-subtle: #f8fafc;
+  --bg-panel: #ffffff;
+  --border-color: #e2e8f0;
+  --border-subtle: #f1f5f9;
+  --border-highlight: #0284c7;
+
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --text-dim: #94a3b8;
+
+  --accent-blue: #0284c7;
+  --accent-cyan: #0891b2;
+  --accent-teal: #0d9488;
+  --accent-purple: #7c3aed;
+
+  --status-normal: #059669;
+  --status-normal-bg: #ecfdf5;
+  --status-normal-border: #a7f3d0;
+
+  --status-warning: #d97706;
+  --status-warning-bg: #fffbeb;
+  --status-warning-border: #fde68a;
+
+  --status-critical: #dc2626;
+  --status-critical-bg: #fef2f2;
+  --status-critical-border: #fecaca;
+
+  --status-offline: #64748b;
+  --status-offline-bg: #f1f5f9;
+  --status-offline-border: #e2e8f0;
+
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.03);
+  --shadow-hover: 0 4px 12px -2px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 10px 25px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-pill: 9999px;
+}
+
+/* Dark Mode Theme Overrides */
+[data-theme="dark"] {
+  --bg-page: #090d16;
+  --bg-card: #111827;
+  --bg-card-hover: #1b2438;
+  --bg-card-subtle: #151d30;
+  --bg-panel: #111827;
+  --border-color: rgba(255, 255, 255, 0.09);
+  --border-subtle: rgba(255, 255, 255, 0.05);
+  --border-highlight: rgba(56, 189, 248, 0.4);
+
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+
+  --accent-blue: #38bdf8;
+  --accent-cyan: #22d3ee;
+  --accent-teal: #2dd4bf;
+  --accent-purple: #a78bfa;
+
+  --status-normal: #10b981;
+  --status-normal-bg: rgba(16, 185, 129, 0.12);
+  --status-normal-border: rgba(16, 185, 129, 0.3);
+
+  --status-warning: #f59e0b;
+  --status-warning-bg: rgba(245, 158, 11, 0.12);
+  --status-warning-border: rgba(245, 158, 11, 0.3);
+
+  --status-critical: #ef4444;
+  --status-critical-bg: rgba(239, 68, 68, 0.15);
+  --status-critical-border: rgba(239, 68, 68, 0.4);
+
+  --status-offline: #94a3b8;
+  --status-offline-bg: rgba(148, 163, 184, 0.1);
+  --status-offline-border: rgba(148, 163, 184, 0.2);
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.35);
+  --shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.6);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-page);
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  line-height: 1.5;
+  overflow-x: hidden;
+  min-height: 100vh;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-page);
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-cyan);
+}
+
+/* =================================================================================
+ * 1. APP HEADER NAVBAR (MATCHES SCREENSHOT)
+ * ================================================================================= */
+.app-header {
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 0.85rem 1.75rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+}
+
+.header-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.brand-title-group {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.app-brand-icon {
+  width: 42px;
+  height: 42px;
+  background: #0891b2;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(8, 145, 178, 0.3);
+  flex-shrink: 0;
+}
+
+.brand-text-wrap h1 {
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--text-main);
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.brand-subtitle {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+/* Right Status Pills & Action Buttons */
+.system-status-pills {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+/* Base Pill */
+.status-pill {
+  padding: 0.32rem 0.85rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  transition: all 0.2s ease;
+}
+
+/* LIVE Pill (matches screenshot green pill) */
+.pill-live {
+  background: var(--status-normal-bg);
+  color: var(--status-normal);
+  border: 1px solid var(--status-normal-border);
+}
+
+.live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--status-normal);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25);
+  animation: pulse-dot 1.8s infinite;
+}
+
+/* MQTT Pill (matches screenshot teal/cyan pill) */
+.pill-mqtt {
+  background: #f0fdfa;
+  color: #0f766e;
+  border: 1px solid #99f6e4;
+}
+[data-theme="dark"] .pill-mqtt {
+  background: rgba(13, 148, 136, 0.15);
+  color: #2dd4bf;
+  border-color: rgba(45, 212, 191, 0.3);
+}
+
+/* Last Update Pill (matches screenshot gray pill) */
+.pill-last-update {
+  background: var(--status-offline-bg);
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+}
+
+/* Action Pill Buttons (Demo Mode, Settings, Theme) */
+.btn-pill {
+  background: var(--bg-card);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-pill);
+  padding: 0.34rem 0.95rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  transition: all 0.18s ease;
+}
+
+.btn-pill:hover {
+  background: var(--bg-card-hover);
+  border-color: #cbd5e1;
+  transform: translateY(-1px);
+}
+
+.btn-pill:active {
+  transform: translateY(0);
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+/* =================================================================================
+ * 2. ALERT NOTIFICATION BANNER (MATCHES SCREENSHOT)
+ * ================================================================================= */
+.alert-banner-container {
+  max-width: 1440px;
+  margin: 1rem auto 0 auto;
+  padding: 0 1.75rem;
+}
+
+.alert-banner {
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  transition: all 0.3s ease;
+}
+
+/* Offline / Disconnected (matches screenshot pink/red banner) */
+.alert-banner.offline, .alert-banner.critical {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+}
+[data-theme="dark"] .alert-banner.offline, [data-theme="dark"] .alert-banner.critical {
+  background: rgba(239, 68, 68, 0.12);
+  border-color: rgba(239, 68, 68, 0.35);
+  color: #fca5a5;
+}
+
+/* Nominal / Online */
+.alert-banner.nominal, .alert-banner.normal {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+}
+[data-theme="dark"] .alert-banner.nominal, [data-theme="dark"] .alert-banner.normal {
+  background: rgba(16, 185, 129, 0.12);
+  border-color: rgba(16, 185, 129, 0.3);
+  color: #86efac;
+}
+
+/* Warning */
+.alert-banner.warning {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  color: #92400e;
+}
+[data-theme="dark"] .alert-banner.warning {
+  background: rgba(245, 158, 11, 0.12);
+  border-color: rgba(245, 158, 11, 0.3);
+  color: #fde68a;
+}
+
+.alert-banner-left {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 0.85rem;
+}
+
+.alert-banner-left strong {
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.alert-banner-icon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.alert-banner-right {
+  font-size: 0.8rem;
+  font-weight: 500;
+  opacity: 0.9;
+}
+
+/* =================================================================================
+ * 3. NAVIGATION TABS (CLEAN LIGHT / DARK SYSTEM)
+ * ================================================================================= */
+.nav-tabs-wrapper {
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border-color);
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.nav-tabs-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  gap: 0.2rem;
+  padding: 0 1.75rem;
+}
+
+.nav-tab-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 500;
+  padding: 0.8rem 1rem;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.nav-tab-btn:hover {
+  color: var(--text-main);
+  background: var(--bg-card-subtle);
+}
+
+.nav-tab-btn.active {
+  color: var(--accent-cyan);
+  border-bottom-color: var(--accent-cyan);
+  font-weight: 600;
+  background: transparent;
+}
+
+/* Main Layout Wrapper */
+.main-wrapper {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 1.25rem 1.75rem 3rem 1.75rem;
+}
+
+.tab-content-panel {
+  display: none;
+}
+
+.tab-content-panel.active {
+  display: block;
+  animation: fadeIn 0.25s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* =================================================================================
+ * 4. TELEMETRY METRIC CARDS (MATCHES SCREENSHOT WHITE CARDS)
+ * ================================================================================= */
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+@media (max-width: 1200px) {
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .grid-4, .grid-3, .grid-2 { grid-template-columns: 1fr; }
+}
+
+/* Telemetry Card Base */
+.telemetry-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.4rem;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, border-color 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  min-height: 145px;
+}
+
+.telemetry-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+  border-color: #cbd5e1;
+}
+[data-theme="dark"] .telemetry-card:hover {
+  border-color: rgba(56, 189, 248, 0.4);
+}
+
+.telemetry-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.telemetry-card-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Subtle Circular Icon Badge at Top-Right (matches screenshot) */
+.telemetry-card-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #f1f5f9;
+  color: #0284c7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  flex-shrink: 0;
+}
+[data-theme="dark"] .telemetry-card-icon {
+  background: rgba(255, 255, 255, 0.06);
+  color: #38bdf8;
+}
+
+/* Center Value Display */
+.telemetry-card-body {
+  margin: 0.2rem 0 0.6rem 0;
+  display: flex;
+  align-items: baseline;
+}
+
+.telemetry-main-value {
+  font-family: var(--font-sans);
+  font-size: 2.15rem;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.telemetry-unit {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-left: 0.35rem;
+}
+
+/* Status variants for value text */
+.status-val-online {
+  color: #059669 !important;
+}
+.status-val-offline {
+  color: #dc2626 !important;
+}
+.status-val-safe {
+  color: #059669 !important;
+}
+.status-val-alarm {
+  color: #dc2626 !important;
+  animation: pulse-alarm 1s infinite alternate;
+}
+
+@keyframes pulse-alarm {
+  from { opacity: 1; }
+  to { opacity: 0.4; }
+}
+
+/* Progress bar inside card */
+.telemetry-progress-track {
+  width: 100%;
+  height: 4px;
+  background: var(--border-subtle);
+  border-radius: 2px;
+  margin: 0.4rem 0 0.6rem 0;
+  overflow: hidden;
+}
+
+.telemetry-progress-fill {
+  height: 100%;
+  border-radius: 2px;
+  background: #0284c7;
+  transition: width 0.4s ease;
+}
+
+/* Bottom Row Footer */
+.telemetry-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+/* Bottom Pill Badges */
+.status-pill-badge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.2rem 0.65rem;
+  border-radius: var(--radius-pill);
+  display: inline-flex;
+  align-items: center;
+}
+
+.status-pill-badge.normal {
+  background: var(--status-normal-bg);
+  color: var(--status-normal);
+}
+
+.status-pill-badge.warning {
+  background: var(--status-warning-bg);
+  color: var(--status-warning);
+}
+
+.status-pill-badge.critical {
+  background: var(--status-critical-bg);
+  color: var(--status-critical);
+}
+
+.sensor-probe-tag {
+  font-size: 0.76rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+/* =================================================================================
+ * 5. MAIN TELEMETRY LINE CHART (MATCHES SCREENSHOT)
+ * ================================================================================= */
+.chart-card-main {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-card);
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.chart-header-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.chart-title-left {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+}
+
+.chart-title-icon {
+  color: #0284c7;
+  margin-top: 2px;
+}
+
+.chart-title-left h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.2;
+}
+
+.chart-subtitle {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 3px;
+}
+
+.chart-legend-pills {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.legend-pill-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--text-muted);
+}
+
+.legend-color-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+.chart-canvas-wrapper {
+  position: relative;
+  width: 100%;
+  height: 260px;
+}
+
+/* =================================================================================
+ * 6. STREAM BAR & BUTTONS
+ * ================================================================================= */
+.realtime-stream-bar {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.realtime-status-group {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.radar-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--status-normal);
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2);
+  animation: radar-pulse 2s infinite;
+}
+
+@keyframes radar-pulse {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5); }
+  70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+.stream-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.stream-subtitle {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+}
+
+.realtime-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+/* Universal Buttons */
+.btn {
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.55rem 0.95rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn-primary {
+  background: #0284c7;
+  color: #ffffff;
+}
+.btn-primary:hover {
+  background: #0369a1;
+}
+
+.btn-secondary {
+  background: var(--bg-card);
+  border-color: var(--border-color);
+  color: var(--text-main);
+}
+.btn-secondary:hover {
+  background: var(--bg-card-hover);
+  border-color: #cbd5e1;
+}
+
+.btn-usb {
+  background: #0f766e;
+  color: #ffffff;
+}
+.btn-usb:hover {
+  background: #115e59;
+}
+.btn-usb.connected {
+  background: #059669;
+}
+
+.btn-danger {
+  background: #fef2f2;
+  border-color: #fecaca;
+  color: #dc2626;
+}
+.btn-danger:hover {
+  background: #dc2626;
+  color: #ffffff;
+}
+
+.btn-warning {
+  background: #fffbeb;
+  border-color: #fde68a;
+  color: #b45309;
+}
+.btn-warning:hover {
+  background: #f59e0b;
+  color: #ffffff;
+}
+
+.btn-success {
+  background: #ecfdf5;
+  border-color: #a7f3d0;
+  color: #047857;
+}
+.btn-success:hover {
+  background: #059669;
+  color: #ffffff;
+}
+
+/* =================================================================================
+ * 7. OTHER CARDS, DIAGRAMS & SUB-PAGES
+ * ================================================================================= */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-card);
+  position: relative;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.85rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.card-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+/* Interactive SVG Architecture Diagram */
+.diagram-container {
+  background: #0f172a;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+svg.architecture-svg {
+  width: 100%;
+  height: auto;
+  min-height: 360px;
+}
+
+/* Interactive Physical Tower Visualizer */
+.tower-tilt-stage {
+  background: #0f172a;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  min-height: 220px;
+}
+
+.tower-svg-wrapper {
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-origin: 50% 90%;
+}
+
+.tilt-compass-ring {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.72rem;
+  font-family: var(--font-mono);
+  color: #38bdf8;
+}
+
+/* SSD1306 OLED Display Simulator */
+.oled-glass-screen {
+  background: #000000;
+  border: 4px solid #1f293d;
+  border-radius: 8px;
+  padding: 0.75rem;
+  font-family: 'Courier New', Courier, monospace;
+  position: relative;
+  box-shadow: inset 0 0 15px rgba(0, 240, 255, 0.15), 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+.oled-screen-frame {
+  width: 256px;
+  height: 128px;
+  background: #000000;
+  border: 2px solid #334155;
+  border-radius: 4px;
+  padding: 8px;
+  font-family: var(--font-mono);
+  color: #00f0ff;
+  font-size: 11px;
+  line-height: 1.3;
+  overflow: hidden;
+  user-select: none;
+  position: relative;
+}
+
+/* Terminal Windows */
+.terminal-window {
+  background: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: var(--radius-md);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: #34d399;
+  overflow: hidden;
+}
+
+.terminal-header {
+  background: #1e293b;
+  padding: 0.4rem 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #334155;
+  color: #94a3b8;
+}
+
+.terminal-body {
+  padding: 0.75rem;
+  height: 220px;
+  overflow-y: auto;
+  line-height: 1.4;
+}
+
+.terminal-line {
+  margin-bottom: 0.2rem;
+  word-break: break-all;
+}
+
+.terminal-line.tx { color: #60a5fa; }
+.terminal-line.rx { color: #34d399; }
+.terminal-line.err { color: #f87171; }
+.terminal-line.warn { color: #fbbf24; }
+
+/* Code Viewer */
+.code-viewer-container {
+  background: #0f172a;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.code-header {
+  background: #1e293b;
+  padding: 0.6rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #334155;
+  color: #f1f5f9;
+}
+
+pre.code-block {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: #e2e8f0;
+  padding: 1.25rem;
+  overflow-x: auto;
+  max-height: 500px;
+  line-height: 1.5;
+  background: #090d16;
+}
+
+/* Component Cards */
+.component-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.component-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent-cyan);
+  box-shadow: var(--shadow-hover);
+}
+
+.component-icon-wrap {
+  width: 44px;
+  height: 44px;
+  background: #e0f2fe;
+  color: #0284c7;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.75rem;
+  font-size: 1.35rem;
+}
+
+/* Modals */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(6px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-content {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  max-width: 800px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 2rem;
+  position: relative;
+  box-shadow: var(--shadow-lg);
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  background: var(--bg-card-subtle);
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-size: 1.25rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.modal-close-btn:hover {
+  background: var(--bg-card-hover);
+  color: var(--text-main);
+}
